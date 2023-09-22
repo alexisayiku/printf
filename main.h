@@ -1,28 +1,43 @@
-#ifndef HEADERFILE_H
-#define HEADERFILE_H
+#ifndef MAIN_H
+#define MAIN_H
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-int _printf(const char *format, ...);
+#include <unistd.h>
+
+#define UNUSED(x) (void)(x)
+#define BUFF_SIZE 1024
+
+/* FLAGS */
+#define F_MINUS 1
+#define F_PLUS 2
+#define F_ZERO 4
+#define F_HASH 8
+#define F_SPACE 16
+
+/* SIZES */
+#define S_LONG 2
+#define S_SHORT 1
+
 /**
-* struct format - This is a typedef struct.
-* @opt: This pointer type char.
-* @call_fun: This is a pointer to call the function.
+* struct fmt - this is Struct op
+* @fmt: This defined the format.
+* @fn: This defined the function associated.
 */
-typedef struct format
+struct fmt
 {
-char *opt;
-int (*call_fun)();
-} format_t;
+char fmt;
+int (*fn)(va_list, char[], int, int, int, int);
+};
+
+/**
+* typedef struct fmt fmt_t - Struct op
+*
+* @fmt: This is a format.
+* @fm_t: This defined the function associated.
+*/
+typedef struct fmt fmt_t;
+
 int _printf(const char *format, ...);
-int parse_format(const char *format, format_t get_opt[], va_list valist);
-int set_string(va_list valist);
-int set_char(va_list valist);
-int _putchar(char c);
-int set_decimal(va_list valist);
-int print_percent(__attribute__((unused))va_list valist);
-int length_of_integer(int n);
-int get_length(char *str __attribute__((__unused__)), va_list valist);
-#endif
+int handle_print(const char *fmt, int *i,
+va_list list, char buffer[], int flags, int width, int precision, int size);
 
